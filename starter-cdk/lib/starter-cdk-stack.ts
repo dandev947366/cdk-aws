@@ -1,4 +1,5 @@
 import * as cdk from "aws-cdk-lib";
+import { CfnOutput, CfnParameter, Duration } from "aws-cdk-lib";
 import { Bucket, CfnBucket } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
@@ -31,14 +32,26 @@ export class StarterCdkStack extends cdk.Stack {
         ],
       },
     });
+    // adjust duration : cdk deploy --parameters duration=10
+    const duration = new CfnParameter(this, 'duration',{
+      default: 6,
+      minValue: 1,
+      maxValue: 10,
+      type: 'Number'
+    })
     // L2 construct : most popular
-    new Bucket(this, "MyL2Bucket", {
+    const myL2Bucket = new Bucket(this, "MyL2Bucket", {
       lifecycleRules: [
         {
-          expiration: cdk.Duration.days(2),
+          expiration: Duration.days(duration.valueAsNumber)
         },
       ],
     });
+     // cdk output
+    new CfnOutput(this, 'myL2Bucket', {
+      value: myL2Bucket.bucketName
+    }) 
+    
     // L3 construct
     new L3Bucket(this, "MyL3Bucket", 3);
     // example resource
@@ -47,3 +60,4 @@ export class StarterCdkStack extends cdk.Stack {
     // });
   }
 }
+
