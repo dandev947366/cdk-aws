@@ -16,6 +16,6 @@
 * `cdk synth`       emits the synthesized CloudFormation template
 
 ## Packge version 
-Node : v18.12.1
-Typescript : v4.9.5
-AWS CDK : v2.1006.0
+* Node : v18.12.1
+* Typescript : v4.9.5
+* AWS CDK : v2.1006.0
